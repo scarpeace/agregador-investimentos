@@ -6,7 +6,6 @@ import gus.buildrun.demo.entity.User;
 import gus.buildrun.demo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,7 +13,7 @@ import java.util.UUID;
 @Service
 public class UserService {
 
-    private UserRepository userRepo;
+    final UserRepository userRepo;
 
     public UserService(UserRepository userRepo) {
         this.userRepo = userRepo;
