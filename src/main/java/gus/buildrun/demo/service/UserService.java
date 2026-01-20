@@ -1,5 +1,6 @@
 package gus.buildrun.demo.service;
 
+import gus.buildrun.demo.controller.dto.AccountResponseDto;
 import gus.buildrun.demo.controller.dto.CreateAccountDto;
 import gus.buildrun.demo.controller.dto.CreateUserDto;
 import gus.buildrun.demo.controller.dto.UpdateUserDto;
@@ -110,8 +111,16 @@ public class UserService {
         billingAddressRepo.save(billingAddress);
 
         return accountCreated;
+    }
 
+    public List<AccountResponseDto> listAccounts(String userId){
+        var foundUser = userRepo.findById(UUID.fromString(userId))
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
+        return foundUser.getAccounts()
+                .stream()
+                .map(ac -> new AccountResponseDto(ac.getAccountId().toString(), ac.getDescription()))
+                .toList();
 
     }
 }

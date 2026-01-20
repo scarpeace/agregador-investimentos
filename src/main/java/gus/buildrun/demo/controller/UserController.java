@@ -1,5 +1,6 @@
 package gus.buildrun.demo.controller;
 
+import gus.buildrun.demo.controller.dto.AccountResponseDto;
 import gus.buildrun.demo.controller.dto.CreateAccountDto;
 import gus.buildrun.demo.controller.dto.CreateUserDto;
 import gus.buildrun.demo.controller.dto.UpdateUserDto;
@@ -77,8 +78,10 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/accounts")
-    public ResponseEntity<Account> getAccount(@PathVariable("userId") String userId) {
-        return null;
+    public ResponseEntity<List<AccountResponseDto>> getAccount(@PathVariable String userId) {
+        var accounts = userService.listAccounts(userId);
+
+        return ResponseEntity.ok(accounts);
     }
 
 
