@@ -1,7 +1,7 @@
 package gus.buildrun.demo.service;
 
-import gus.buildrun.demo.controller.CreateUserDto;
-import gus.buildrun.demo.controller.UpdateUserDto;
+import gus.buildrun.demo.controller.dto.CreateUserDto;
+import gus.buildrun.demo.controller.dto.UpdateUserDto;
 import gus.buildrun.demo.entity.User;
 import gus.buildrun.demo.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -36,8 +36,7 @@ class UserServiceTest {
    private ArgumentCaptor<User> userArgumentCaptor;
 
    @Captor
-   private ArgumentCaptor<UUID> uuidCaptor;
-
+   private ArgumentCaptor<UUID> uuidArgumentCaptor;
    @Nested
     class createUser{
 
@@ -111,7 +110,7 @@ class UserServiceTest {
                    Instant.now()
            );
 
-           doReturn(Optional.of(user)).when(userRepo).findById(uuidCaptor.capture());
+           doReturn(Optional.of(user)).when(userRepo).findById(uuidArgumentCaptor.capture());
 
            var output = userService.findUserById("3fa85f64-5717-4562-b3fc-2c963f66afa6");
 
@@ -119,7 +118,7 @@ class UserServiceTest {
            var foundUser = output.get();
 
            assertNotNull(foundUser);
-           assertEquals(user.getUserId(), uuidCaptor.getValue());
+           assertEquals(user.getUserId(), uuidArgumentCaptor.getValue());
            assertEquals(user.getUsername(), foundUser.getUsername());
            assertEquals(user.getEmail(), foundUser.getEmail());
            assertEquals(user.getPassword(), foundUser.getPassword());
@@ -134,12 +133,12 @@ class UserServiceTest {
            var userId = UUID.randomUUID();
 
 
-           doReturn(Optional.empty()).when(userRepo).findById(uuidCaptor.capture());
+           doReturn(Optional.empty()).when(userRepo).findById(uuidArgumentCaptor.capture());
 
            var output = userService.findUserById(userId.toString());
 
            assertTrue(output.isEmpty(),"Expected the output to be empty");
-           assertEquals(userId, uuidCaptor.getValue());
+           assertEquals(userId, uuidArgumentCaptor.getValue());
 
        }
 
@@ -182,15 +181,15 @@ class UserServiceTest {
        void shouldDeleteUserWhenSuccess(){
            //Arrange
 
-           doReturn(true).when(userRepo).existsById(uuidCaptor.capture());
-           doNothing().when(userRepo).deleteById(uuidCaptor.capture());
+           doReturn(true).when(userRepo).existsById(uuidArgumentCaptor.capture());
+           doNothing().when(userRepo).deleteById(uuidArgumentCaptor.capture());
            var userId = UUID.randomUUID();
 
            //Act
            userService.deleteUser(userId.toString());
 
            //Assert
-           var idList = uuidCaptor.getAllValues();
+           var idList = uuidArgumentCaptor.getAllValues();
            assertEquals(userId, idList.get(0));
            assertEquals(userId, idList.get(1));
 
@@ -204,7 +203,7 @@ class UserServiceTest {
        void shouldNotDeleteUserWhenSuccess(){
            //Arrange
 
-           doReturn(false).when(userRepo).existsById(uuidCaptor.capture());
+           doReturn(false).when(userRepo).existsById(uuidArgumentCaptor.capture());
 
            var userId = UUID.randomUUID();
 
@@ -212,10 +211,10 @@ class UserServiceTest {
            userService.deleteUser(userId.toString());
 
            //Assert
-           assertEquals(userId, uuidCaptor.getValue());
+           assertEquals(userId, uuidArgumentCaptor.getValue());
 
 
-           verify(userRepo, times(1)).existsById(uuidCaptor.getValue());
+           verify(userRepo, times(1)).existsById(uuidArgumentCaptor.getValue());
            verify(userRepo, times(0)).deleteById(any());
 
        }
@@ -245,7 +244,7 @@ class UserServiceTest {
 
            doReturn(Optional.of(user))
                    .when(userRepo).
-                   findById(uuidCaptor.capture());
+                   findById(uuidArgumentCaptor.capture());
 
            doReturn(user)
                    .when(userRepo)
@@ -257,10 +256,10 @@ class UserServiceTest {
            //Assert
            var userCaptured = userArgumentCaptor.getValue();
 
-           assertEquals(user.getUserId(), uuidCaptor.getValue());
+           assertEquals(user.getUserId(), uuidArgumentCaptor.getValue());
            assertEquals(user.getUsername(), userCaptured.getUsername());
            assertEquals(user.getPassword(), userCaptured.getPassword());
-           verify(userRepo,times(1)).findById(uuidCaptor.getValue());
+           verify(userRepo,times(1)).findById(uuidArgumentCaptor.getValue());
            verify(userRepo, times(1)).save(user);
        }
 
@@ -269,19 +268,20 @@ class UserServiceTest {
        void shouldNotUpdateUserWhenUserDoesNotExist(){
            //Arrange
            var userId = UUID.randomUUID();
+           var updateUserDto = new UpdateUserDto("username","password");
 
 
            doReturn(Optional.empty())
                    .when(userRepo).
-                   findById(uuidCaptor.capture());
+                   findById(uuidArgumentCaptor.capture());
 
            //Act
-           var output = userService.findUserById(userId.toString());
+           var output = userService.updateUser(userId.toString(),updateUserDto);
 
            //Assert
 
-           assertTrue(output.isEmpty());
-           verify(userRepo,times(1)).findById(uuidCaptor.getValue());
+           assertNull(output);
+           verify(userRepo,times(1)).findById(uuidArgumentCaptor.getValue());
            verify(userRepo, times(0)).save(any());
        }
    }
