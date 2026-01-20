@@ -10,7 +10,6 @@ public class AccountStock {
     @EmbeddedId
     private AccountStockId id;
 
-
     @ManyToOne
     @MapsId("accountId")
     @JoinColumn(name = "account_id")

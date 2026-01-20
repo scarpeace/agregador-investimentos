@@ -1,9 +1,6 @@
 package gus.buildrun.demo.service;
 
-import gus.buildrun.demo.controller.dto.AccountResponseDto;
-import gus.buildrun.demo.controller.dto.CreateAccountDto;
-import gus.buildrun.demo.controller.dto.CreateUserDto;
-import gus.buildrun.demo.controller.dto.UpdateUserDto;
+import gus.buildrun.demo.controller.dto.*;
 import gus.buildrun.demo.entity.Account;
 import gus.buildrun.demo.entity.BillingAddress;
 import gus.buildrun.demo.entity.User;
@@ -50,8 +47,15 @@ public class UserService {
         return userRepo.findById(UUID.fromString(userId));
     }
 
-    public List<User> getAllUsers(){
-        return  userRepo.findAll();
+    public List<UserResponseDto> getAllUsers(){
+        return  userRepo.findAll()
+                .stream()
+                .map(usr -> new UserResponseDto(
+                        usr.getUserId().toString(),
+                        usr.getUsername(),
+                        usr.getEmail(),
+                        usr.getAccounts()))
+                .toList();
     }
 
     public void deleteUser(String userId){
@@ -115,12 +119,18 @@ public class UserService {
 
     public List<AccountResponseDto> listAccounts(String userId){
         var foundUser = userRepo.findById(UUID.fromString(userId))
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found in the DATABASE"));
 
         return foundUser.getAccounts()
                 .stream()
                 .map(ac -> new AccountResponseDto(ac.getAccountId().toString(), ac.getDescription()))
                 .toList();
+
+    }
+
+    public void listStocks(String accountId){
+        var foundAccount = accountRepo.findById(UUID.fromString(accountId));
+
 
     }
 }

@@ -1,9 +1,6 @@
 package gus.buildrun.demo.controller;
 
-import gus.buildrun.demo.controller.dto.AccountResponseDto;
-import gus.buildrun.demo.controller.dto.CreateAccountDto;
-import gus.buildrun.demo.controller.dto.CreateUserDto;
-import gus.buildrun.demo.controller.dto.UpdateUserDto;
+import gus.buildrun.demo.controller.dto.*;
 import gus.buildrun.demo.entity.Account;
 import gus.buildrun.demo.entity.User;
 import gus.buildrun.demo.service.UserService;
@@ -45,7 +42,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<User>> getAllUser() {
+    public ResponseEntity<List<UserResponseDto>> getAllUser() {
 
         var allUsers = userService.getAllUsers();
         return ResponseEntity.ok(allUsers);
@@ -82,6 +79,13 @@ public class UserController {
         var accounts = userService.listAccounts(userId);
 
         return ResponseEntity.ok(accounts);
+    }
+
+    @GetMapping("/{accountId}/stocks")
+    public ResponseEntity<Void> getStocks(@PathVariable String accountId){
+
+
+        return null;
     }
 
 

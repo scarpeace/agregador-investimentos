@@ -2,6 +2,8 @@ package gus.buildrun.demo.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -21,11 +23,12 @@ public class Account {
 
     @ManyToOne
     @JoinColumn(name="user_id")
-    @JsonBackReference
+    @JsonIgnoreProperties("accounts")
     private User user;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "account")
     @PrimaryKeyJoinColumn
+    @JsonIgnoreProperties("account")
     private BillingAddress address;
 
     @OneToMany

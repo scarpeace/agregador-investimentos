@@ -1,5 +1,6 @@
 package gus.buildrun.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.UUID;
@@ -21,6 +22,7 @@ public class BillingAddress {
     @OneToOne(cascade = CascadeType.ALL)
     @MapsId
     @JoinColumn( name = "account_id")
+    @JsonIgnoreProperties("address")
     private Account account;
 
     public BillingAddress() {
