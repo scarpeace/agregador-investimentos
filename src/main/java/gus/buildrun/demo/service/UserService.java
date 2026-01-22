@@ -3,9 +3,11 @@ package gus.buildrun.demo.service;
 import gus.buildrun.demo.controller.dto.*;
 import gus.buildrun.demo.entity.Account;
 import gus.buildrun.demo.entity.BillingAddress;
+import gus.buildrun.demo.entity.Stock;
 import gus.buildrun.demo.entity.User;
 import gus.buildrun.demo.repository.AccountRepository;
 import gus.buildrun.demo.repository.BillingAddressRepository;
+import gus.buildrun.demo.repository.StockRepository;
 import gus.buildrun.demo.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,11 +24,13 @@ public class UserService {
     final UserRepository userRepo;
     final AccountRepository accountRepo;
     final BillingAddressRepository billingAddressRepo;
+    final StockRepository stockRepo;
 
-    public UserService(UserRepository userRepo, AccountRepository accountRepo, BillingAddressRepository billingAddressRepo) {
+    public UserService(UserRepository userRepo, AccountRepository accountRepo, BillingAddressRepository billingAddressRepo, StockRepository stockRepo) {
         this.userRepo = userRepo;
         this.accountRepo = accountRepo;
         this.billingAddressRepo = billingAddressRepo;
+        this.stockRepo = stockRepo;
     }
 
     public UUID createUser(CreateUserDto updateUserDto){
@@ -128,9 +132,5 @@ public class UserService {
 
     }
 
-    public void listStocks(String accountId){
-        var foundAccount = accountRepo.findById(UUID.fromString(accountId));
 
-
-    }
 }

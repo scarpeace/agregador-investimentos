@@ -31,7 +31,7 @@ public class Account {
     @JsonIgnoreProperties("account")
     private BillingAddress address;
 
-    @OneToMany
+    @OneToMany(mappedBy = "account")
     private List<AccountStock> accountStocks;
 
     public Account() {

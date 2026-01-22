@@ -76,17 +76,9 @@ public class UserController {
 
     @GetMapping("/{userId}/accounts")
     public ResponseEntity<List<AccountResponseDto>> getAccount(@PathVariable String userId) {
-        var accounts = userService.listAccounts(userId);
 
+        var accounts = userService.listAccounts(userId);
         return ResponseEntity.ok(accounts);
     }
-
-    @GetMapping("/{accountId}/stocks")
-    public ResponseEntity<Void> getStocks(@PathVariable String accountId){
-
-
-        return null;
-    }
-
 
 }

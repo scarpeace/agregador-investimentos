@@ -14,9 +14,6 @@ public class Stock {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "ticker")
-    private String ticker;
-
     public Stock() {
     }
 
@@ -40,4 +37,6 @@ public class Stock {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
 }
