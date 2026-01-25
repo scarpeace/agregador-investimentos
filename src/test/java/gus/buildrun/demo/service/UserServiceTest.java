@@ -1,8 +1,12 @@
 package gus.buildrun.demo.service;
 
+import gus.buildrun.demo.controller.dto.AccountStockReponseDto;
+import gus.buildrun.demo.controller.dto.CreateAccountDto;
 import gus.buildrun.demo.controller.dto.CreateUserDto;
 import gus.buildrun.demo.controller.dto.UpdateUserDto;
-import gus.buildrun.demo.entity.User;
+import gus.buildrun.demo.entity.*;
+import gus.buildrun.demo.repository.AccountRepository;
+import gus.buildrun.demo.repository.BillingAddressRepository;
 import gus.buildrun.demo.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -15,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,8 +34,17 @@ class UserServiceTest {
     @Mock
     private UserRepository userRepo;
 
+    @Mock
+    private AccountRepository accountRepo;
+
+    @Mock
+    private BillingAddressRepository billingAddressRepo;
+
    @InjectMocks
    private UserService userService;
+
+   @InjectMocks
+   private AccountService accountService;
 
    @Captor
    private ArgumentCaptor<User> userArgumentCaptor;
@@ -285,4 +299,62 @@ class UserServiceTest {
            verify(userRepo, times(0)).save(any());
        }
    }
+
+   @Nested
+    class createaccount{
+
+       @DisplayName("Should create account when success")
+       @Test
+       void shouldCreateAccountWhenSuccess(){
+
+           //Arrange
+           User user = new User(
+                   UUID.fromString("f81d4fae-7dec-11d0-a765-00a0c91e6bf6"),
+                   "username",
+                   "email@email.com",
+                   "password",
+                   Instant.now(),
+                   null
+           );
+
+           Account account = new Account(
+                   UUID.fromString("92c09a3d-192b-4ab5-b610-2421c2327954"),
+                   "Conta de Investimentos",
+                   user,
+                   null,
+                   new ArrayList<>()
+           );
+
+           BillingAddress address = new BillingAddress(
+                   UUID.randomUUID(),
+                   "Bertolina felicidade",
+                   12,
+                   account
+           );
+
+           CreateAccountDto createAccountDto = new CreateAccountDto(
+                   "Conta de investimentos",
+                   "Bertolina felicidade",
+                   12);
+
+           doReturn(account).when(accountRepo).save(any(Account.class));
+           doReturn(address).when(billingAddressRepo).save(any(BillingAddress.class));
+           doReturn(Optional.of(user)).when(userRepo).findById(
+                   UUID.fromString("f81d4fae-7dec-11d0-a765-00a0c91e6bf6")
+           );
+
+           //Act
+            var output = userService.createAccount(
+                    "f81d4fae-7dec-11d0-a765-00a0c91e6bf6",
+                    createAccountDto);
+
+           //Assert
+           assertNotNull(output);
+           assertEquals(output.getAccountId(),account.getAccountId());
+           assertEquals(output.getUser(), user);
+           assertEquals(output.getDescription(), account.getDescription());
+
+       }
+   }
+
 }

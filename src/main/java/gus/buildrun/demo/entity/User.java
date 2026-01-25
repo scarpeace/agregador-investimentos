@@ -36,7 +36,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Account> accounts;
 
-
     public User(UUID userId, String username, String email, String password, Instant creationTimestamp, Instant updateTimestamp) {
         this.userId = userId;
         this.username = username;
