@@ -2,7 +2,6 @@ package gus.buildrun.demo.controller;
 
 import gus.buildrun.demo.controller.dto.AccountStockReponseDto;
 import gus.buildrun.demo.controller.dto.AssociateAccountStockDto;
-import gus.buildrun.demo.entity.Account;
 import gus.buildrun.demo.service.AccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

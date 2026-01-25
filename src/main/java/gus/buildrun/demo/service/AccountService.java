@@ -1,10 +1,8 @@
 package gus.buildrun.demo.service;
 
 import gus.buildrun.demo.client.BrapiClient;
-import gus.buildrun.demo.controller.dto.AccountResponseDto;
 import gus.buildrun.demo.controller.dto.AccountStockReponseDto;
 import gus.buildrun.demo.controller.dto.AssociateAccountStockDto;
-import gus.buildrun.demo.entity.Account;
 import gus.buildrun.demo.entity.AccountStock;
 import gus.buildrun.demo.entity.AccountStockId;
 import gus.buildrun.demo.repository.AccountRepository;
@@ -54,7 +52,6 @@ public class AccountService {
     }
 
     public List<AccountStockReponseDto> getAccount(String accountId){
-        String token = "76USv4Kp1jpaGYWSCSRnsf";
 
         var account = accountRepo.findById(UUID.fromString(accountId))
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Account not found in the DATABASE"));
