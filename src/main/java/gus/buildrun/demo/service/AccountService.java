@@ -1,14 +1,10 @@
 package gus.buildrun.demo.service;
 
 import gus.buildrun.demo.client.BrapiClient;
-import gus.buildrun.demo.controller.dto.AccountResponseDto;
 import gus.buildrun.demo.controller.dto.AccountStockReponseDto;
 import gus.buildrun.demo.controller.dto.AssociateAccountStockDto;
-import gus.buildrun.demo.controller.dto.CreateAccountDto;
-import gus.buildrun.demo.entity.Account;
 import gus.buildrun.demo.entity.AccountStock;
 import gus.buildrun.demo.entity.AccountStockId;
-import gus.buildrun.demo.entity.BillingAddress;
 import gus.buildrun.demo.repository.AccountRepository;
 import gus.buildrun.demo.repository.AccountStockRepository;
 import gus.buildrun.demo.repository.StockRepository;
@@ -17,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
